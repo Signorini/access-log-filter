@@ -24,8 +24,11 @@ class ARequests(IAgreggation):
             tmp = reduce(lambda a, b: a + b, stime)
             return tmp
 
+    def ordered_result(self):
+        return self._counter
+
     def output(self):
 
-        for key, item in self._counter.items():
+        for key, item in self.ordered_result().items():
             line = '%s - [%s:%s] | RC %s' % (key[0:11], key[11:13], key[13:15], item)
             self.view(line)
