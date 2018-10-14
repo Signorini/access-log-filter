@@ -14,4 +14,4 @@ class SourceFile(object):
 
 
     def load(self):
-        return open(self.path, 'r');
+        return open(self.path, 'r')

@@ -9,24 +9,39 @@ from ..logger import logger
 
 
 class ATopSources(ATopIps):
+    """
+        Extend ATopIps aggregation,
+        -> get top ip result,
+        -> after find whois information using RDAP request, doing using parallelism tasks
+        -> merge the result and ordered
+    """
 
     def __init__(self, qtd):
         self._tmp = {}
         super().__init__(qtd)
 
-    def parse_whois_RDAP(self, ip):
-        obj = IPWhois(ip)
-        whois = obj.lookup_rdap(inc_nir=False, inc_raw=False, rate_limit_timeout=60, retry_count=2)
+    def output(self):
+        """
+            Initialize Event Loop using asyncio lib
+            RDAP request it's a blocking standard python library, need to create a executor to handle it with threads
+            Run until all task it' done
+            Close the loop
+        """
 
-        return {k: whois.get(k, None) for k in
-                ('asn', 'asn_country_code', 'asn_date', 'asn_description', 'asn_registry', 'entities')}
-
-    def get_whois(self, ip):
-        res = self.parse_whois_RDAP(ip)
-        self._tmp[ip] = res
-        logger.info("[Info] Process %s" % ip)
+        loop = asyncio.get_event_loop()
+        executor = concurrent.futures.ThreadPoolExecutor(max_workers=10)
+        loop.run_until_complete(self.mfuture(loop, executor))  # call coroutine method self.mfuture
+        loop.close()
 
     async def mfuture(self, loop, executor):
+        """
+            Create task list and run, using event loop with coroutines
+
+            1 - Get a Top Ips result using parent class method (top ips)
+            2 - Append tasks, each task it's asyncio executor
+            3 - Gather and await to finish all tasks
+            4 - Re order the result
+        """
         result = self.ordered_result()
 
         task_list = []
@@ -46,9 +61,21 @@ class ATopSources(ATopIps):
             line = '[%s](%s) ->%s' % (item[0], item[1], asn)
             self.view(line)
 
+    def get_whois(self, ip):
+        """
+            Single task, request the rdap info, and put on shared variable, using hash to control race conditions.
 
-    def output(self):
-        loop = asyncio.get_event_loop()
-        executor = concurrent.futures.ThreadPoolExecutor(max_workers=10)
-        loop.run_until_complete(self.mfuture(loop, executor))
-        loop.close()
+            -> get top ip result,
+            -> after find whois information using RDAP request, doing using parallelism tasks
+            -> merge the result and ordered
+        """
+        res = self.parse_whois_RDAP(ip)  # RDAP Request
+        self._tmp[ip] = res  # Put the data on shared class variable
+        logger.info("[Info] Process %s" % ip)
+
+    def parse_whois_RDAP(self, ip):
+        obj = IPWhois(ip)  # 3 party library, use dns python and rdap endpoints
+        whois = obj.lookup_rdap(inc_nir=False, inc_raw=False, rate_limit_timeout=60, retry_count=2)
+
+        return {k: whois.get(k, None) for k in
+                ('asn', 'asn_country_code', 'asn_date', 'asn_description', 'asn_registry', 'entities')}

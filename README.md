@@ -1,14 +1,15 @@
 
-
 ## Script - Analyses access logs IP - (Access logs)
 
 Analyses access logs (apache or nginx), can filters by ip, start and end time, aggregate information by top ips, request range or top whois access ip, used to finding malicious tried access, fast analyses and follow flows networks, hot links access and more.
 
 ### Usage:
 ```bash
-python cli.py --ip 10.10.10.10 --src ./my-access-logs.txt
+python3 cli.py --ip 10.10.10.10 --src ./my-access-logs.txt
 #with cidr 
-python cli.py --ip 10.10.0.0/16 --src ./my-access-logs.txt
+python3 cli.py --ip 10.10.0.0/16 --src ./my-access-logs.txt
+#help
+python3 cli.py --help
 
 bash
 weblog.sh --ip 10.10.0.0/16 --src ./my-access-logs.txt
@@ -26,9 +27,9 @@ Wil return:
 Output log lines which matches either the <IP address> or the <IP range CIDR>.
 
 ```bash
-python cli.py --ip 10.10.10.10 --src ./my-access-logs.txt
+python3 cli.py --ip 10.10.10.10 --src ./my-access-logs.txt
 #with cidr 
-python cli.py --ip 10.10.0.0/16 --src ./my-access-logs.txt
+python3 cli.py --ip 10.10.0.0/16 --src ./my-access-logs.txt
 ```
 
 
@@ -37,9 +38,9 @@ python cli.py --ip 10.10.0.0/16 --src ./my-access-logs.txt
 Only process lines after/before the given time
 
 ```bash
-python cli.py --start 19:00 --src ./my-access-logs.txt
+python3 cli.py --start 19:00 --src ./my-access-logs.txt
 #with cidr 
-python cli.py --start 19:00 --end 22:00 --src ./my-access-logs.txt
+python3 cli.py --start 19:00 --end 22:00 --src ./my-access-logs.txt
 ```
 
 PS: Allowed only HH:MM format.
@@ -52,7 +53,7 @@ The top <Number> of IP addresses by request count.
 Default: 50
 
 ```bash
-python cli.py --top-ips 10 --src ./my-access-logs.txt
+python3 cli.py --top-ips 10 --src ./my-access-logs.txt
 ```
 
 ```bash
@@ -70,7 +71,7 @@ Lists the top <Number> IP owners based on the whois information. Information abo
 Default: 5
 
 ```bash
-python cli.py --top-sources 10 --src ./my-access-logs.txt
+python3 cli.py --top-sources 10 --src ./my-access-logs.txt
 ```
 
 ```bash
@@ -87,9 +88,9 @@ Prints out the request count per minute or hour.
 Default: minutes
 
 ```bash
-python cli.py --request-rate --src ./my-access-logs.txt
+python3 cli.py --request-rate --src ./my-access-logs.txt
 #or
-python cli.py --request-rate hour --src ./my-access-logs.txt
+python3 cli.py --request-rate hour --src ./my-access-logs.txt
 ```
 
 ```bash
@@ -107,11 +108,12 @@ python cli.py --request-rate hour --src ./my-access-logs.txt
 You can chaining all filters and used with aggregation, but only one aggregation can be use in the same time.
 
 ```bash
-python cli.py --ip 218.0.0.0/8 --start 17:00 --top-source 5 --src logs/sre_test_log.txt
+python3 cli.py --ip 218.0.0.0/8 --start 17:00 --top-source 5 --src logs/sre_test_log.txt
 ```
 
 Only will show 5 top source filtered by 218./8 ips and after 17:00
 
+-------
 
 ### Setup and installation (Develop)
 
@@ -119,6 +121,9 @@ Only will show 5 top source filtered by 218./8 ips and after 17:00
 * Python >3.5
     * ipaddress (>3.3)
     * asyncio (>3.5)
+    
+    * Embedded dnspython
+    * Embedded ipwhois (with changes to be compatible with python 3.5)
 
 
 ##### Development
@@ -136,10 +141,17 @@ source bin/activate
 
 ##### Test
 
-Testing code
+Minimal Testing code
+
+- Integration test code
+    - FilterIp
+    - FilterStart
+    - FilterEnd
+    - Aggregation Top IPs
+    - Aggregation Request rate
 
 ```bash
-python -m unittest discover
+python3 -m unittest discover
 ```
 
 ##### Folder structure
@@ -161,7 +173,7 @@ python -m unittest discover
         - SourceFile.py: Read file system
 
 - **logs**: Static logs files
-- **vendor**: 3 libraries
+- **vendor**: 3 party libraries
     - **dns**: http://www.dnspython.org/
     - **ipwhois**: https://pypi.org/project/ipwhois/
     
@@ -172,14 +184,15 @@ python -m unittest discover
 Assumptions Points
 
 - Complexity Time
-    - Ip filter amd time O(n)
-    - Tops Ips and Request Rage O(n)
-    - Top Source O(2n)
+    - Ip filter and time **O(n)**
+    - Tops Ips and Request Rate **O(n)**
+    - Top Source **O(n + y)** (n log size and y qtd top ip)
     
 - Complexity Space
-    - Ip filter amd time O(n)
-    - Tops Ips and Request Rage O(n)
-    - Top Source O(3n) (Don't have any recursive situation, the script use 3 data structure to be performatic)
+    - Ip filter and time **O(n)**
+    - Tops Ips and Request Rate **O(n)**
+    - Top Source **O(n + 2y)** (Don't have any recursive situation, 
+    but the script use 2y data structure to be performatic) (n log size, y qtd top show)
     
 - Using "with" statement, internally python will control a streaming on file line by line, 
 **won't have a memory problem**.
