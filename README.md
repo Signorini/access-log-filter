@@ -1,7 +1,7 @@
 
 ## Script - Analyses access logs IP - (Access logs)
 
-Analyses access logs (apache or nginx), can filters by ip, start and end time, aggregate information by top ips, request range or top whois access ip, used to finding malicious tried access, fast analyses and follow flows networks, hot links access and more.
+Analyses access logs (apache or nginx), can filters by ip, start and end time, aggregate information by top ips, request rate or top whois access ip, used to finding malicious tried access, fast analyses, networks flows, hot links and more.
 
 ### Usage:
 ```bash
@@ -24,7 +24,7 @@ Wil return:
 
 #### Filter - Ip:
 
-Output log lines which matches either the <IP address> or the <IP range CIDR>.
+Output log lines which matches either the < IP address > or the < IP range CIDR >.
 
 ```bash
 python3 cli.py --ip 10.10.10.10 --src ./my-access-logs.txt
@@ -46,7 +46,7 @@ python3 cli.py --start 19:00 --end 22:00 --src ./my-access-logs.txt
 PS: Allowed only HH:MM format.
 
 
-#### Aggregation - Top Ips <Number>:
+#### Aggregation - Top Ips < Number >:
 
 The top <Number> of IP addresses by request count.
 
@@ -64,7 +64,7 @@ RC (1) [218.234.33.60]
 ```
 
 
-#### Aggregation - Top Ips Source <Number>:
+#### Aggregation - Top Ips Source < Number >:
 
 Lists the top <Number> IP owners based on the whois information. Information about WHOIS:
 
@@ -81,7 +81,7 @@ python3 cli.py --top-sources 10 --src ./my-access-logs.txt
 [218.234.33.60](1) -> | asn: 9318 | asn_country_code: KR | asn_date: 2002-04-30 | asn_description: SKB-AS SK Broadband Co Ltd, KR | asn_registry: apnic | entities: ['IM670-AP', 'IRT-KRNIC-KR']
 ```
 
-#### Aggregation - Request Rate <hour | minutes>:
+#### Aggregation - Request Rate < hour | minutes >:
 
 Prints out the request count per minute or hour.
 
