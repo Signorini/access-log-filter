@@ -123,7 +123,7 @@ Only will show 5 top source filtered by 218./8 ips and after 17:00
     * asyncio (>3.5)
     
     * Embedded dnspython
-    * Embedded ipwhois (with changes to be compatible with python 3.5)
+    * Embedded ipwhois (with modifications, to be compatible with python 3.5)
 
 
 ##### Development
@@ -154,7 +154,7 @@ Minimal Testing code
 python3 -m unittest discover
 ```
 
-##### Folder structure
+#### Folder structure
 
 - **libs**
     - **aggregation**: All aggregation domain
@@ -179,7 +179,9 @@ python3 -m unittest discover
     
 - **test**: Minimal test, ensure filters and aggregations are working.
 
-##### Computer Science metrics and scaling points
+------
+
+#### Computer Science metrics and scaling points
 
 Assumptions Points
 
