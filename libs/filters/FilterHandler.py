@@ -42,7 +42,7 @@ class FilterHandler(object):
 
             arg = dargs.get(key)
             if arg:
-                self.filters.append(filter(arg))  #Create instance class and append into var
+                self.filters.append(filter(arg))  #Create new instance and append into var - RuleClass(<cli arg>)
 
 
     def match(self, line):
@@ -53,9 +53,9 @@ class FilterHandler(object):
                 line (:str):
                     Single line
         """
-        for check in self.filters:  #iterate all filter class
+        for check in self.filters:  #iterate all instance filter
             r = check.match(line)   #check if pass
             if not bool(r):
                return False         #if not return false, Crawler class will ignore this line
 
-        return True
+        return True                 #if yes, Crawler class will show the line or append on the bag (aggregation process)

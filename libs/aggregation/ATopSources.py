@@ -37,7 +37,7 @@ class ATopSources(ATopIps):
         """
             Create task list and run, using event loop with coroutines
 
-            1 - Get a Top Ips result using parent class method (top ips)
+            1 - Get a Top Ips result using parent class method (top ips ordered_result())
             2 - Append tasks, each task it's asyncio executor
             3 - Gather and await to finish all tasks
             4 - Re order the result
@@ -52,7 +52,7 @@ class ATopSources(ATopIps):
         self.ordered_out()
 
     def ordered_out(self):
-        result = self.ordered_result()
+        result = self.ordered_result() #retrive ordered result, iterate and use hashtable tmp to add whois information
 
         logger.info("[Info] Ordering...")
         for item in result:

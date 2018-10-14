@@ -29,7 +29,7 @@ class RuleIP(object):
             Apply ip filter
             - Single regex to extract the first ip address
             - Check if its a real ip address
-            - Compare if this ip is in the network
+            - Compare if this ip is on the network
 
             Args:
                 str (:str):

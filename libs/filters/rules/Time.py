@@ -9,7 +9,7 @@ class RuleTime(object):
 
     def __init__(self, time, cmp):
         """
-            Check if cli arg start or/and end it's valid
+            Check if cli arg start or/and end it's valid time (Its not deep real valid time, but for performance, execute only one regex).
 
             Args:
                 time (:str/<HH:MM>):
@@ -32,13 +32,13 @@ class RuleTime(object):
         """
             Extract time
 
-            Ex:
+            Ex line:
             168.235.196.131 [24/Oct/2016:00:02:40 -0700] 0.000 https .com "GET /staticx/udemy/css/fancybox_overlay.png HTTP/1.1" 404 162
 
             Will extract 24/Oct/2016:00:02:40,
             Get hour and minute and concatenate (02:40 -> 0240)
             Typecast to int
-            Do conditional using cmp statement
+            Do conditional using self.cmp statement
 
             Args:
                 str (:str):
