@@ -38,9 +38,9 @@ python3 cli.py --ip 10.10.0.0/16 --src ./my-access-logs.txt
 Only process lines after/before the given time
 
 ```bash
-python3 cli.py --start 19:00 --src ./my-access-logs.txt
+python3 cli.py --start 19:00 --src ./log_test_acess.txt
 #with cidr 
-python3 cli.py --start 19:00 --end 22:00 --src ./my-access-logs.txt
+python3 cli.py --start 19:00 --end 22:00 --src ./log_test_acess.txt
 ```
 
 PS: Allowed only HH:MM format.
@@ -53,7 +53,7 @@ The top <Number> of IP addresses by request count.
 Default: 50
 
 ```bash
-python3 cli.py --top-ips 10 --src ./my-access-logs.txt
+python3 cli.py --top-ips 10 --src ./log_test_acess.txt
 ```
 
 ```bash
@@ -71,7 +71,7 @@ Lists the top <Number> IP owners based on the whois information. Information abo
 Default: 5
 
 ```bash
-python3 cli.py --top-sources 10 --src ./my-access-logs.txt
+python3 cli.py --top-sources 10 --src ./log_test_acess.txt
 ```
 
 ```bash
@@ -88,9 +88,9 @@ Prints out the request count per minute or hour.
 Default: minutes
 
 ```bash
-python3 cli.py --request-rate --src ./my-access-logs.txt
+python3 cli.py --request-rate --src ./log_test_acess.txt
 #or
-python3 cli.py --request-rate hour --src ./my-access-logs.txt
+python3 cli.py --request-rate hour --src ./log_test_acess.txt
 ```
 
 ```bash
@@ -108,7 +108,7 @@ python3 cli.py --request-rate hour --src ./my-access-logs.txt
 You can chaining all filters and used with aggregation, but only one aggregation can be use in the same time.
 
 ```bash
-python3 cli.py --ip 218.0.0.0/8 --start 17:00 --top-source 5 --src logs/sre_test_log.txt
+python3 cli.py --ip 218.0.0.0/8 --start 17:00 --top-source 5 --src logs/log_test_acess.txt
 ```
 
 Only will show 5 top source filtered by 218./8 ips and after 17:00
