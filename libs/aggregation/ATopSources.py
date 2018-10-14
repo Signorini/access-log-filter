@@ -43,7 +43,7 @@ class ATopSources(ATopIps):
         for item in result:
             data = self._tmp[item[0]]
             asn = reduce(lambda x, key: '%s | %s: %s' % (x, key, data[key]), data, '')
-            line = (item[0], '[%s](%s) ->%s' % (item[0], item[1], asn))
+            line = '[%s](%s) ->%s' % (item[0], item[1], asn)
             self.view(line)
 
 
