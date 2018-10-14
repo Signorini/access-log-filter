@@ -119,8 +119,8 @@ Only will show 5 top source filtered by 218./8 ips and after 17:00
 
 ##### Requiriments
 * Python >3.5
-    * ipaddress (>3.3)
-    * asyncio (>3.5)
+    * standard python - ipaddress (>3.3)
+    * standard python - asyncio (>3.5)
     
     * Embedded dnspython
     * Embedded ipwhois (with modifications, to be compatible with python 3.5)
