@@ -44,9 +44,9 @@ class Crawler(object):
             - Top Source O(n + y) (n log size and y qtd top ip)
 
         - Complexity Space
-            - Ip filter and time O(n)
-            - Tops Ips and Request Rate O(n)
-            - Top Source O(n + 2y) (Don't have any recursive situation,
+            - Ip filter and time O(1)
+            - Tops Ips and Request Rate O(y)
+            - Top Source O(2y) (Don't have any recursive situation,
             but the script use 2y data structure to be performatic) (n log size, y qtd top show)
         """
 
